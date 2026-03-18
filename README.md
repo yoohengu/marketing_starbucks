@@ -13,7 +13,8 @@ pip install -r requirements.txt
 
 ## 작업 전
 ```
-source .venv/Scripts/activate # 가상환경 접속
+deactivate  # 가상환경 끄기(보통 할 필요 없음)
+source .venv/Scripts/activate  # 가상환경 접속
 git pull
 ```
 
