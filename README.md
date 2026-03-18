@@ -10,5 +10,13 @@ source .venv/Scripts/activate
 pip install -r requirements.txt
 ```
 
+## 작업 후
+```
+git add .
+git commit -m '작업 내용'
+git push
+```
+- push 하기 전에는 반드시 팀원들에게 얘기하고 push해주시면 땡큐입니다~
+
 ## ㅇㅇ
-데이터 파일은 최상위 디렉토리의 data 폴더에 저장 후 작업해주시면 땡큐입니다~
+- 데이터 파일은 최상위 디렉토리의 data 폴더에 저장 후 작업해주시면 땡큐입니다~
