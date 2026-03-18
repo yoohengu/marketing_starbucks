@@ -10,6 +10,11 @@ source .venv/Scripts/activate
 pip install -r requirements.txt
 ```
 
+## 작업 전
+```
+git pull
+```
+
 ## 작업 후
 ```
 git add .
