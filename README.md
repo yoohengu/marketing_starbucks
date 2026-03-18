@@ -4,6 +4,7 @@
 ## 초기 실행
 ```
 git clone https://github.com/yoohengu/marketing_starbucks.git
+cd marketing_starbucks
 
 python -m venv .venv
 source .venv/Scripts/activate
