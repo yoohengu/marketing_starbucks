@@ -12,6 +12,7 @@ pip install -r requirements.txt
 
 ## 작업 전
 ```
+source .venv/Scripts/activate # 가상환경 접속
 git pull
 ```
 
