@@ -7,7 +7,6 @@ scipy>=1.11
 matplotlib>=3.8
 seaborn>=0.13
 plotly>=5.18
-missingno>=0.5
 
 # Jupyter
 jupyterlab>=4.0
