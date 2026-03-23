@@ -66,6 +66,10 @@ transcript = transcript.drop('offer id', axis=1)
 transcript = transcript.drop('value', axis=1)
 ```
 
+    [NbConvertApp] Converting notebook 03_eda_v2.ipynb to markdown
+    [NbConvertApp] Writing 82709 bytes to 03_eda_v2.md
+    
+
 
 ```python
 # profile의 필요없는 Unnamed:0 컬럼 제거
@@ -1717,7 +1721,12 @@ print(f"건수: {len(person_df)}")
 ```python
 # 1. 즉시 달성 / 정상 달성 구분
 problem_df['is_instant'] = problem_df['offer received'] == problem_df['offer completed']
-problem_df['is_normal'] = problem_df['offer received'] < problem_df['offer completed']
+
+problem_df['is_normal'] = (
+    (problem_df['offer received'] <= problem_df['offer viewed']) &
+    (problem_df['offer viewed'] <= problem_df['offer completed']) &
+    (problem_df['offer received'] < problem_df['offer completed'])
+)
 
 # 2. person + offer completed 기준으로 그룹 집계
 group_flags = problem_df.groupby(['person', 'offer completed']).agg(
@@ -1774,7 +1783,7 @@ print("\n케이스 유형별 그룹 수")
 display(target_groups['case_type'].value_counts())
 ```
 
-    이상 케이스 전체 건수: 5056건
+    이상 케이스 전체 건수: 2209건
     
 
 
@@ -1836,33 +1845,7 @@ display(target_groups['case_type'].value_counts())
       <td>2</td>
     </tr>
     <tr>
-      <th>3</th>
-      <td>0020c2b971eb4e9188eac86d93036a77</td>
-      <td>discount_10_2_10</td>
-      <td>Discount_2</td>
-      <td>336.0</td>
-      <td>NaN</td>
-      <td>510.0</td>
-      <td>17.24</td>
-      <td>normal_double</td>
-      <td>0</td>
-      <td>2</td>
-    </tr>
-    <tr>
       <th>2</th>
-      <td>0020c2b971eb4e9188eac86d93036a77</td>
-      <td>bogo_10_10_5</td>
-      <td>Bogo_1</td>
-      <td>408.0</td>
-      <td>426.0</td>
-      <td>510.0</td>
-      <td>17.24</td>
-      <td>normal_double</td>
-      <td>0</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>4</th>
       <td>00ae03011f9f49b8a4b3e6d416678b0b</td>
       <td>bogo_10_10_7</td>
       <td>Bogo_2</td>
@@ -1875,7 +1858,7 @@ display(target_groups['case_type'].value_counts())
       <td>2</td>
     </tr>
     <tr>
-      <th>5</th>
+      <th>3</th>
       <td>00ae03011f9f49b8a4b3e6d416678b0b</td>
       <td>discount_7_3_7</td>
       <td>Discount_2</td>
@@ -1888,33 +1871,7 @@ display(target_groups['case_type'].value_counts())
       <td>2</td>
     </tr>
     <tr>
-      <th>7</th>
-      <td>00c2f812f4604c8893152a5c6572030e</td>
-      <td>discount_10_2_7</td>
-      <td>Discount_1</td>
-      <td>504.0</td>
-      <td>NaN</td>
-      <td>582.0</td>
-      <td>24.21</td>
-      <td>normal_double</td>
-      <td>0</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>00c2f812f4604c8893152a5c6572030e</td>
-      <td>bogo_10_10_5</td>
-      <td>Bogo_3</td>
-      <td>576.0</td>
-      <td>600.0</td>
-      <td>582.0</td>
-      <td>24.21</td>
-      <td>normal_double</td>
-      <td>0</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>8</th>
+      <th>4</th>
       <td>00cf1bbec83f4a658f8994e556db4633</td>
       <td>discount_10_2_10</td>
       <td>Discount_2</td>
@@ -1927,7 +1884,7 @@ display(target_groups['case_type'].value_counts())
       <td>2</td>
     </tr>
     <tr>
-      <th>9</th>
+      <th>5</th>
       <td>00cf1bbec83f4a658f8994e556db4633</td>
       <td>discount_10_2_7</td>
       <td>Discount_1</td>
@@ -1940,33 +1897,7 @@ display(target_groups['case_type'].value_counts())
       <td>2</td>
     </tr>
     <tr>
-      <th>11</th>
-      <td>00d791e20c564add8056498e40eb56cc</td>
-      <td>bogo_5_5_7</td>
-      <td>Bogo_1</td>
-      <td>504.0</td>
-      <td>510.0</td>
-      <td>582.0</td>
-      <td>10.38</td>
-      <td>normal_double</td>
-      <td>0</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>00d791e20c564add8056498e40eb56cc</td>
-      <td>bogo_10_10_5</td>
-      <td>Bogo_1</td>
-      <td>576.0</td>
-      <td>606.0</td>
-      <td>582.0</td>
-      <td>10.38</td>
-      <td>normal_double</td>
-      <td>0</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>12</th>
+      <th>6</th>
       <td>00d7c95f793a4212af44e632fdc1e431</td>
       <td>bogo_5_5_7</td>
       <td>Bogo_1</td>
@@ -1979,7 +1910,7 @@ display(target_groups['case_type'].value_counts())
       <td>1</td>
     </tr>
     <tr>
-      <th>13</th>
+      <th>7</th>
       <td>00d7c95f793a4212af44e632fdc1e431</td>
       <td>discount_10_2_7</td>
       <td>Discount_2</td>
@@ -1992,85 +1923,7 @@ display(target_groups['case_type'].value_counts())
       <td>1</td>
     </tr>
     <tr>
-      <th>15</th>
-      <td>00ed7e22b32749cfafbfd88592d401d4</td>
-      <td>discount_10_2_7</td>
-      <td>Discount_1</td>
-      <td>408.0</td>
-      <td>NaN</td>
-      <td>522.0</td>
-      <td>14.64</td>
-      <td>normal_double</td>
-      <td>0</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>00ed7e22b32749cfafbfd88592d401d4</td>
-      <td>discount_10_2_10</td>
-      <td>Discount_1</td>
-      <td>504.0</td>
-      <td>516.0</td>
-      <td>522.0</td>
-      <td>14.64</td>
-      <td>normal_double</td>
-      <td>0</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>17</th>
-      <td>0103de989e084e0fab400e80678d7591</td>
-      <td>discount_20_5_10</td>
-      <td>Discount_1</td>
-      <td>168.0</td>
-      <td>NaN</td>
-      <td>384.0</td>
-      <td>20.20</td>
-      <td>normal_double</td>
-      <td>0</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>16</th>
-      <td>0103de989e084e0fab400e80678d7591</td>
-      <td>discount_10_2_10</td>
-      <td>Discount_1</td>
-      <td>336.0</td>
-      <td>384.0</td>
-      <td>384.0</td>
-      <td>20.20</td>
-      <td>normal_double</td>
-      <td>0</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>19</th>
-      <td>0103de989e084e0fab400e80678d7591</td>
-      <td>discount_20_5_10</td>
-      <td>Discount_2</td>
-      <td>504.0</td>
-      <td>NaN</td>
-      <td>588.0</td>
-      <td>9.00</td>
-      <td>normal_double</td>
-      <td>0</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>18</th>
-      <td>0103de989e084e0fab400e80678d7591</td>
-      <td>bogo_5_5_5</td>
-      <td>Bogo_2</td>
-      <td>576.0</td>
-      <td>588.0</td>
-      <td>588.0</td>
-      <td>9.00</td>
-      <td>normal_double</td>
-      <td>0</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>21</th>
+      <th>9</th>
       <td>015c3d28c67e46aa95e9ec97c27220e8</td>
       <td>discount_10_2_7</td>
       <td>Discount_1</td>
@@ -2083,7 +1936,7 @@ display(target_groups['case_type'].value_counts())
       <td>2</td>
     </tr>
     <tr>
-      <th>20</th>
+      <th>8</th>
       <td>015c3d28c67e46aa95e9ec97c27220e8</td>
       <td>bogo_10_10_7</td>
       <td>Bogo_1</td>
@@ -2096,7 +1949,7 @@ display(target_groups['case_type'].value_counts())
       <td>2</td>
     </tr>
     <tr>
-      <th>23</th>
+      <th>11</th>
       <td>01633b71b3a2457aa7d35d8bcc3afb5a</td>
       <td>discount_20_5_10</td>
       <td>Discount_1</td>
@@ -2109,7 +1962,7 @@ display(target_groups['case_type'].value_counts())
       <td>2</td>
     </tr>
     <tr>
-      <th>22</th>
+      <th>10</th>
       <td>01633b71b3a2457aa7d35d8bcc3afb5a</td>
       <td>discount_10_2_10</td>
       <td>Discount_1</td>
@@ -2122,7 +1975,7 @@ display(target_groups['case_type'].value_counts())
       <td>2</td>
     </tr>
     <tr>
-      <th>24</th>
+      <th>12</th>
       <td>01784d3e205548a594ba3fcdbdaaf17d</td>
       <td>bogo_10_10_5</td>
       <td>Bogo_1</td>
@@ -2135,7 +1988,7 @@ display(target_groups['case_type'].value_counts())
       <td>2</td>
     </tr>
     <tr>
-      <th>25</th>
+      <th>13</th>
       <td>01784d3e205548a594ba3fcdbdaaf17d</td>
       <td>bogo_10_10_7</td>
       <td>Bogo_1</td>
@@ -2148,7 +2001,7 @@ display(target_groups['case_type'].value_counts())
       <td>2</td>
     </tr>
     <tr>
-      <th>27</th>
+      <th>15</th>
       <td>01887dcd32b64feb807e2436548b6c87</td>
       <td>discount_7_3_7</td>
       <td>Discount_1</td>
@@ -2161,7 +2014,7 @@ display(target_groups['case_type'].value_counts())
       <td>2</td>
     </tr>
     <tr>
-      <th>26</th>
+      <th>14</th>
       <td>01887dcd32b64feb807e2436548b6c87</td>
       <td>bogo_5_5_7</td>
       <td>Bogo_1</td>
@@ -2174,30 +2027,186 @@ display(target_groups['case_type'].value_counts())
       <td>2</td>
     </tr>
     <tr>
-      <th>29</th>
-      <td>01ac633821f0498893320b41b5b22dfc</td>
+      <th>17</th>
+      <td>01b6d7e8f0884deb936a8a7f15dba895</td>
+      <td>discount_10_2_7</td>
+      <td>Discount_1</td>
+      <td>408.0</td>
+      <td>420.0</td>
+      <td>558.0</td>
+      <td>12.78</td>
+      <td>normal_double</td>
+      <td>0</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>01b6d7e8f0884deb936a8a7f15dba895</td>
+      <td>discount_10_2_10</td>
+      <td>Discount_1</td>
+      <td>504.0</td>
+      <td>510.0</td>
+      <td>558.0</td>
+      <td>12.78</td>
+      <td>normal_double</td>
+      <td>0</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>0215efe5136d4a038cb81eae92d59368</td>
       <td>discount_20_5_10</td>
       <td>Discount_1</td>
       <td>336.0</td>
-      <td>NaN</td>
+      <td>342.0</td>
+      <td>534.0</td>
+      <td>11.96</td>
+      <td>normal_double</td>
+      <td>0</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>0215efe5136d4a038cb81eae92d59368</td>
+      <td>bogo_5_5_5</td>
+      <td>Bogo_1</td>
+      <td>504.0</td>
       <td>528.0</td>
-      <td>22.36</td>
+      <td>534.0</td>
+      <td>11.96</td>
+      <td>normal_double</td>
+      <td>0</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>021adce38ab34ede96422ae107643fd5</td>
+      <td>discount_10_2_7</td>
+      <td>Discount_3</td>
+      <td>504.0</td>
+      <td>516.0</td>
+      <td>576.0</td>
+      <td>15.64</td>
+      <td>mixed_instant_normal</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>021adce38ab34ede96422ae107643fd5</td>
+      <td>discount_7_3_7</td>
+      <td>Discount_1</td>
+      <td>576.0</td>
+      <td>576.0</td>
+      <td>576.0</td>
+      <td>15.64</td>
+      <td>mixed_instant_normal</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>021c1940868647efbcb40ccdb942813b</td>
+      <td>discount_10_2_10</td>
+      <td>Discount_1</td>
+      <td>168.0</td>
+      <td>192.0</td>
+      <td>366.0</td>
+      <td>15.49</td>
+      <td>normal_double</td>
+      <td>0</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>021c1940868647efbcb40ccdb942813b</td>
+      <td>bogo_5_5_5</td>
+      <td>Bogo_1</td>
+      <td>336.0</td>
+      <td>348.0</td>
+      <td>366.0</td>
+      <td>15.49</td>
+      <td>normal_double</td>
+      <td>0</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>021c1940868647efbcb40ccdb942813b</td>
+      <td>bogo_5_5_5</td>
+      <td>Bogo_2</td>
+      <td>504.0</td>
+      <td>528.0</td>
+      <td>624.0</td>
+      <td>19.03</td>
+      <td>normal_double</td>
+      <td>0</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>021c1940868647efbcb40ccdb942813b</td>
+      <td>bogo_10_10_7</td>
+      <td>Bogo_1</td>
+      <td>576.0</td>
+      <td>594.0</td>
+      <td>624.0</td>
+      <td>19.03</td>
+      <td>normal_double</td>
+      <td>0</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>02a458e1233342b79caff81edbcc30a9</td>
+      <td>discount_7_3_7</td>
+      <td>Discount_1</td>
+      <td>504.0</td>
+      <td>522.0</td>
+      <td>618.0</td>
+      <td>21.51</td>
+      <td>normal_double</td>
+      <td>0</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>02a458e1233342b79caff81edbcc30a9</td>
+      <td>bogo_5_5_5</td>
+      <td>Bogo_1</td>
+      <td>576.0</td>
+      <td>588.0</td>
+      <td>618.0</td>
+      <td>21.51</td>
       <td>normal_double</td>
       <td>0</td>
       <td>2</td>
     </tr>
     <tr>
       <th>28</th>
-      <td>01ac633821f0498893320b41b5b22dfc</td>
+      <td>02abd909ebc94aca8766f3f0ee39db80</td>
+      <td>bogo_5_5_7</td>
+      <td>Bogo_1</td>
+      <td>336.0</td>
+      <td>396.0</td>
+      <td>408.0</td>
+      <td>14.80</td>
+      <td>mixed_instant_normal</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>02abd909ebc94aca8766f3f0ee39db80</td>
       <td>discount_10_2_10</td>
       <td>Discount_1</td>
-      <td>504.0</td>
-      <td>522.0</td>
-      <td>528.0</td>
-      <td>22.36</td>
-      <td>normal_double</td>
-      <td>0</td>
-      <td>2</td>
+      <td>408.0</td>
+      <td>414.0</td>
+      <td>408.0</td>
+      <td>14.80</td>
+      <td>mixed_instant_normal</td>
+      <td>1</td>
+      <td>1</td>
     </tr>
   </tbody>
 </table>
@@ -2210,10 +2219,1091 @@ display(target_groups['case_type'].value_counts())
 
 
     case_type
-    normal_double              2190
-    mixed_instant_normal        292
-    mixed_and_normal_double      16
+    normal_double              861
+    mixed_instant_normal       216
+    mixed_and_normal_double     10
     Name: count, dtype: int64
+
+
+- 더블 카운팅이 아닐 수도 있다 -> 만약 결제를 2번 했는데 우연히 가격이 같은 상품을 구매해서 포함된거라면?
+
+
+```python
+import pandas as pd
+import numpy as np
+
+# =========================================================
+# 0. 데이터 복사
+# =========================================================
+df = problem_df.copy()
+ts = transcript.copy()
+
+# =========================================================
+# 1. 즉시 달성 / 정상 달성 정의
+# =========================================================
+df['is_instant'] = df['offer received'] == df['offer completed']
+
+df['is_normal'] = (
+    (df['offer received'] <= df['offer viewed']) &
+    (df['offer viewed'] <= df['offer completed']) &
+    (df['offer received'] < df['offer completed'])
+)
+
+# =========================================================
+# 2. 더블 카운팅 "후보군" (이상 케이스) 추출
+# =========================================================
+group_flags = df.groupby(['person', 'offer completed']).agg(
+    instant_cnt=('is_instant', 'sum'),
+    normal_cnt=('is_normal', 'sum'),
+    completed_row_cnt=('offer_id', 'size'),
+    unique_offer_cnt=('offer_id', 'nunique')
+).reset_index()
+
+group_flags['has_mixed'] = (group_flags['instant_cnt'] >= 1) & (group_flags['normal_cnt'] >= 1)
+group_flags['has_normal_double'] = group_flags['normal_cnt'] >= 2
+
+candidate_groups = group_flags[
+    group_flags['has_mixed'] | group_flags['has_normal_double']
+].copy()
+
+# =========================================================
+# 3. transaction 정보 집계
+# =========================================================
+txn_df = ts[ts['event'] == 'transaction'].copy()
+
+txn_counts = txn_df.groupby(['person', 'time']).agg(
+    txn_cnt=('event', 'size'),
+    txn_amount_sum=('amount', 'sum')
+).reset_index().rename(columns={'time': 'offer completed'})
+
+# =========================================================
+# 4. 후보군 상세 데이터 추출
+# =========================================================
+candidate_detail = df.merge(
+    candidate_groups[['person', 'offer completed']],
+    on=['person', 'offer completed'],
+    how='inner'
+)
+
+# =========================================================
+# 5. 같은 offer_id 중복 여부 확인
+# =========================================================
+offer_dup = candidate_detail.groupby(
+    ['person', 'offer completed', 'offer_id']
+).size().reset_index(name='same_offer_cnt')
+
+same_offer_dup = offer_dup.groupby(['person', 'offer completed']).agg(
+    max_same_offer_cnt=('same_offer_cnt', 'max'),
+    duplicated_offer_id_cnt=('same_offer_cnt', lambda x: (x >= 2).sum())
+).reset_index()
+
+# =========================================================
+# 6. 그룹 기준 통합
+# =========================================================
+review_df = candidate_groups.merge(
+    txn_counts,
+    on=['person', 'offer completed'],
+    how='left'
+).merge(
+    same_offer_dup,
+    on=['person', 'offer completed'],
+    how='left'
+)
+
+review_df['txn_cnt'] = review_df['txn_cnt'].fillna(0).astype(int)
+review_df['txn_amount_sum'] = review_df['txn_amount_sum'].fillna(0)
+review_df['max_same_offer_cnt'] = review_df['max_same_offer_cnt'].fillna(1).astype(int)
+review_df['duplicated_offer_id_cnt'] = review_df['duplicated_offer_id_cnt'].fillna(0).astype(int)
+
+# =========================================================
+# 7. "더블 카운팅이 아닐 가능성 높은 데이터" 제거
+# =========================================================
+filtered_groups = review_df[
+    ~(
+        # transaction 충분 + offer 중복 없음 → 정상 가능성 높음
+        (review_df['txn_cnt'] >= review_df['completed_row_cnt']) &
+        (review_df['unique_offer_cnt'] == review_df['completed_row_cnt'])
+    )
+].copy()
+
+# =========================================================
+# 8. case_type 부여 (설명용)
+# =========================================================
+filtered_groups['case_type'] = 'other'
+
+filtered_groups.loc[
+    filtered_groups['has_mixed'] & ~filtered_groups['has_normal_double'],
+    'case_type'
+] = 'mixed_instant_normal'
+
+filtered_groups.loc[
+    ~filtered_groups['has_mixed'] & filtered_groups['has_normal_double'],
+    'case_type'
+] = 'normal_double'
+
+filtered_groups.loc[
+    filtered_groups['has_mixed'] & filtered_groups['has_normal_double'],
+    'case_type'
+] = 'mixed_and_normal_double'
+
+# =========================================================
+# 9. 상세 데이터 최종 생성
+# =========================================================
+final_df = candidate_detail.merge(
+    filtered_groups[
+        [
+            'person', 'offer completed',
+            'instant_cnt', 'normal_cnt',
+            'completed_row_cnt', 'unique_offer_cnt',
+            'txn_cnt', 'txn_amount_sum',
+            'max_same_offer_cnt', 'duplicated_offer_id_cnt',
+            'case_type'
+        ]
+    ],
+    on=['person', 'offer completed'],
+    how='inner'
+).sort_values(['person', 'offer completed', 'offer received'])
+
+# 불필요 컬럼 제거
+final_df = final_df.drop(columns=['is_instant', 'is_normal'])
+
+# =========================================================
+# 10. 결과 출력
+# =========================================================
+print("=== 전체 후보 그룹 수 (필터링 전) ===")
+print(len(review_df))
+
+print("\n=== 필터링 후 남은 그룹 수 ===")
+print(len(filtered_groups))
+
+print("\n=== case_type 분포 ===")
+display(filtered_groups['case_type'].value_counts())
+
+print("\n=== 상위 더블 카운팅 후보 그룹 ===")
+display(
+    filtered_groups.sort_values(
+        ['completed_row_cnt', 'txn_cnt', 'duplicated_offer_id_cnt'],
+        ascending=[False, True, False]
+    ).head(20)
+)
+
+print("\n=== 최종 상세 데이터 ===")
+display(
+    final_df[
+        [
+            'person', 'offer_id', 'offer_cycle',
+            'offer received', 'offer viewed', 'offer completed', 'amount',
+            'case_type',
+            'completed_row_cnt', 'txn_cnt', 'txn_amount_sum',
+            'unique_offer_cnt', 'duplicated_offer_id_cnt'
+        ]
+    ].head(30)
+)
+```
+
+    === 전체 후보 그룹 수 (필터링 전) ===
+    1087
+    
+    === 필터링 후 남은 그룹 수 ===
+    1087
+    
+    === case_type 분포 ===
+    
+
+
+    case_type
+    normal_double              861
+    mixed_instant_normal       216
+    mixed_and_normal_double     10
+    Name: count, dtype: int64
+
+
+    
+    === 상위 더블 카운팅 후보 그룹 ===
+    
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>person</th>
+      <th>offer completed</th>
+      <th>instant_cnt</th>
+      <th>normal_cnt</th>
+      <th>completed_row_cnt</th>
+      <th>unique_offer_cnt</th>
+      <th>has_mixed</th>
+      <th>has_normal_double</th>
+      <th>txn_cnt</th>
+      <th>txn_amount_sum</th>
+      <th>max_same_offer_cnt</th>
+      <th>duplicated_offer_id_cnt</th>
+      <th>case_type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>504</th>
+      <td>75bb371cf36d4a9186397a9866ed2fbe</td>
+      <td>576.0</td>
+      <td>1</td>
+      <td>2</td>
+      <td>4</td>
+      <td>4</td>
+      <td>True</td>
+      <td>True</td>
+      <td>1</td>
+      <td>31.44</td>
+      <td>1</td>
+      <td>0</td>
+      <td>mixed_and_normal_double</td>
+    </tr>
+    <tr>
+      <th>37</th>
+      <td>088debab4050432abc4817f192abc702</td>
+      <td>516.0</td>
+      <td>0</td>
+      <td>3</td>
+      <td>3</td>
+      <td>3</td>
+      <td>False</td>
+      <td>True</td>
+      <td>1</td>
+      <td>25.59</td>
+      <td>1</td>
+      <td>0</td>
+      <td>normal_double</td>
+    </tr>
+    <tr>
+      <th>38</th>
+      <td>08926f1f08c34a4a9681ab3d6a5ef17e</td>
+      <td>576.0</td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>3</td>
+      <td>True</td>
+      <td>True</td>
+      <td>1</td>
+      <td>37.01</td>
+      <td>1</td>
+      <td>0</td>
+      <td>mixed_and_normal_double</td>
+    </tr>
+    <tr>
+      <th>44</th>
+      <td>0999506e6713408b96827816f547f0ff</td>
+      <td>606.0</td>
+      <td>0</td>
+      <td>3</td>
+      <td>3</td>
+      <td>3</td>
+      <td>False</td>
+      <td>True</td>
+      <td>1</td>
+      <td>12.93</td>
+      <td>1</td>
+      <td>0</td>
+      <td>normal_double</td>
+    </tr>
+    <tr>
+      <th>118</th>
+      <td>1fc1b2cb8a7d4fc8966c12a56aea8585</td>
+      <td>504.0</td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>3</td>
+      <td>True</td>
+      <td>True</td>
+      <td>1</td>
+      <td>23.47</td>
+      <td>1</td>
+      <td>0</td>
+      <td>mixed_and_normal_double</td>
+    </tr>
+    <tr>
+      <th>133</th>
+      <td>24b7186006df42968b948016dda0030a</td>
+      <td>576.0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>3</td>
+      <td>3</td>
+      <td>True</td>
+      <td>False</td>
+      <td>1</td>
+      <td>24.25</td>
+      <td>1</td>
+      <td>0</td>
+      <td>mixed_instant_normal</td>
+    </tr>
+    <tr>
+      <th>145</th>
+      <td>2698c067b1d74815bc3a899e301f93e8</td>
+      <td>558.0</td>
+      <td>0</td>
+      <td>2</td>
+      <td>3</td>
+      <td>3</td>
+      <td>False</td>
+      <td>True</td>
+      <td>1</td>
+      <td>16.24</td>
+      <td>1</td>
+      <td>0</td>
+      <td>normal_double</td>
+    </tr>
+    <tr>
+      <th>175</th>
+      <td>2d40e25b82b94b37bbad2332e90a1034</td>
+      <td>510.0</td>
+      <td>0</td>
+      <td>2</td>
+      <td>3</td>
+      <td>3</td>
+      <td>False</td>
+      <td>True</td>
+      <td>1</td>
+      <td>23.59</td>
+      <td>1</td>
+      <td>0</td>
+      <td>normal_double</td>
+    </tr>
+    <tr>
+      <th>183</th>
+      <td>2e60dab0d4ce46faa0cd690ac315c440</td>
+      <td>648.0</td>
+      <td>0</td>
+      <td>3</td>
+      <td>3</td>
+      <td>3</td>
+      <td>False</td>
+      <td>True</td>
+      <td>1</td>
+      <td>24.21</td>
+      <td>1</td>
+      <td>0</td>
+      <td>normal_double</td>
+    </tr>
+    <tr>
+      <th>194</th>
+      <td>2fc5fa0b50f944e398b903b0be851678</td>
+      <td>504.0</td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>3</td>
+      <td>True</td>
+      <td>True</td>
+      <td>1</td>
+      <td>510.52</td>
+      <td>1</td>
+      <td>0</td>
+      <td>mixed_and_normal_double</td>
+    </tr>
+    <tr>
+      <th>240</th>
+      <td>393e6938e7eb46cb86bcb04f231efc0f</td>
+      <td>576.0</td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>3</td>
+      <td>True</td>
+      <td>True</td>
+      <td>1</td>
+      <td>24.44</td>
+      <td>1</td>
+      <td>0</td>
+      <td>mixed_and_normal_double</td>
+    </tr>
+    <tr>
+      <th>324</th>
+      <td>4cbe33c601a5407f8202086565c55111</td>
+      <td>558.0</td>
+      <td>0</td>
+      <td>2</td>
+      <td>3</td>
+      <td>3</td>
+      <td>False</td>
+      <td>True</td>
+      <td>1</td>
+      <td>31.72</td>
+      <td>1</td>
+      <td>0</td>
+      <td>normal_double</td>
+    </tr>
+    <tr>
+      <th>345</th>
+      <td>528339af535e43aaaa128fc5044fb46d</td>
+      <td>600.0</td>
+      <td>0</td>
+      <td>3</td>
+      <td>3</td>
+      <td>3</td>
+      <td>False</td>
+      <td>True</td>
+      <td>1</td>
+      <td>21.04</td>
+      <td>1</td>
+      <td>0</td>
+      <td>normal_double</td>
+    </tr>
+    <tr>
+      <th>374</th>
+      <td>59d01620b8c04fdbb630040c6deeb0a1</td>
+      <td>510.0</td>
+      <td>0</td>
+      <td>3</td>
+      <td>3</td>
+      <td>3</td>
+      <td>False</td>
+      <td>True</td>
+      <td>1</td>
+      <td>11.30</td>
+      <td>1</td>
+      <td>0</td>
+      <td>normal_double</td>
+    </tr>
+    <tr>
+      <th>406</th>
+      <td>609dffa9eb714e3281a9aca1e5ce48f0</td>
+      <td>504.0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>3</td>
+      <td>3</td>
+      <td>True</td>
+      <td>False</td>
+      <td>1</td>
+      <td>21.46</td>
+      <td>1</td>
+      <td>0</td>
+      <td>mixed_instant_normal</td>
+    </tr>
+    <tr>
+      <th>413</th>
+      <td>631b3ebd660243df8069c49d4c37f836</td>
+      <td>504.0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>3</td>
+      <td>3</td>
+      <td>True</td>
+      <td>False</td>
+      <td>1</td>
+      <td>84.76</td>
+      <td>1</td>
+      <td>0</td>
+      <td>mixed_instant_normal</td>
+    </tr>
+    <tr>
+      <th>415</th>
+      <td>63ee1bb377864f1481f45819e3c7ce76</td>
+      <td>408.0</td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>3</td>
+      <td>True</td>
+      <td>True</td>
+      <td>1</td>
+      <td>23.78</td>
+      <td>1</td>
+      <td>0</td>
+      <td>mixed_and_normal_double</td>
+    </tr>
+    <tr>
+      <th>430</th>
+      <td>66af9e9ba5224128a37f2b0db9f7c982</td>
+      <td>576.0</td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>3</td>
+      <td>True</td>
+      <td>True</td>
+      <td>1</td>
+      <td>30.22</td>
+      <td>1</td>
+      <td>0</td>
+      <td>mixed_and_normal_double</td>
+    </tr>
+    <tr>
+      <th>444</th>
+      <td>68bab9dee0394863a2d15eeffa64d2fb</td>
+      <td>588.0</td>
+      <td>0</td>
+      <td>2</td>
+      <td>3</td>
+      <td>3</td>
+      <td>False</td>
+      <td>True</td>
+      <td>1</td>
+      <td>18.66</td>
+      <td>1</td>
+      <td>0</td>
+      <td>normal_double</td>
+    </tr>
+    <tr>
+      <th>472</th>
+      <td>6d9f997f587349d1b3977558dda3e2af</td>
+      <td>576.0</td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>3</td>
+      <td>True</td>
+      <td>True</td>
+      <td>1</td>
+      <td>30.31</td>
+      <td>1</td>
+      <td>0</td>
+      <td>mixed_and_normal_double</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+    
+    === 최종 상세 데이터 ===
+    
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>person</th>
+      <th>offer_id</th>
+      <th>offer_cycle</th>
+      <th>offer received</th>
+      <th>offer viewed</th>
+      <th>offer completed</th>
+      <th>amount</th>
+      <th>case_type</th>
+      <th>completed_row_cnt</th>
+      <th>txn_cnt</th>
+      <th>txn_amount_sum</th>
+      <th>unique_offer_cnt</th>
+      <th>duplicated_offer_id_cnt</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>0011e0d4e6b944f998e987f904e8c1e5</td>
+      <td>discount_20_5_10</td>
+      <td>Discount_1</td>
+      <td>408.0</td>
+      <td>432.0</td>
+      <td>576.0</td>
+      <td>22.05</td>
+      <td>normal_double</td>
+      <td>2</td>
+      <td>1</td>
+      <td>22.05</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>0011e0d4e6b944f998e987f904e8c1e5</td>
+      <td>bogo_5_5_7</td>
+      <td>Bogo_1</td>
+      <td>504.0</td>
+      <td>516.0</td>
+      <td>576.0</td>
+      <td>22.05</td>
+      <td>normal_double</td>
+      <td>2</td>
+      <td>1</td>
+      <td>22.05</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>00ae03011f9f49b8a4b3e6d416678b0b</td>
+      <td>bogo_10_10_7</td>
+      <td>Bogo_2</td>
+      <td>504.0</td>
+      <td>534.0</td>
+      <td>618.0</td>
+      <td>30.83</td>
+      <td>normal_double</td>
+      <td>2</td>
+      <td>1</td>
+      <td>30.83</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>00ae03011f9f49b8a4b3e6d416678b0b</td>
+      <td>discount_7_3_7</td>
+      <td>Discount_2</td>
+      <td>576.0</td>
+      <td>606.0</td>
+      <td>618.0</td>
+      <td>30.83</td>
+      <td>normal_double</td>
+      <td>2</td>
+      <td>1</td>
+      <td>30.83</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>00cf1bbec83f4a658f8994e556db4633</td>
+      <td>discount_10_2_10</td>
+      <td>Discount_2</td>
+      <td>336.0</td>
+      <td>438.0</td>
+      <td>564.0</td>
+      <td>33.28</td>
+      <td>normal_double</td>
+      <td>2</td>
+      <td>1</td>
+      <td>33.28</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>00cf1bbec83f4a658f8994e556db4633</td>
+      <td>discount_10_2_7</td>
+      <td>Discount_1</td>
+      <td>504.0</td>
+      <td>516.0</td>
+      <td>564.0</td>
+      <td>33.28</td>
+      <td>normal_double</td>
+      <td>2</td>
+      <td>1</td>
+      <td>33.28</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>00d7c95f793a4212af44e632fdc1e431</td>
+      <td>bogo_5_5_7</td>
+      <td>Bogo_1</td>
+      <td>408.0</td>
+      <td>498.0</td>
+      <td>504.0</td>
+      <td>18.58</td>
+      <td>mixed_instant_normal</td>
+      <td>2</td>
+      <td>1</td>
+      <td>18.58</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>00d7c95f793a4212af44e632fdc1e431</td>
+      <td>discount_10_2_7</td>
+      <td>Discount_2</td>
+      <td>504.0</td>
+      <td>NaN</td>
+      <td>504.0</td>
+      <td>18.58</td>
+      <td>mixed_instant_normal</td>
+      <td>2</td>
+      <td>1</td>
+      <td>18.58</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>015c3d28c67e46aa95e9ec97c27220e8</td>
+      <td>discount_10_2_7</td>
+      <td>Discount_1</td>
+      <td>504.0</td>
+      <td>510.0</td>
+      <td>618.0</td>
+      <td>22.12</td>
+      <td>normal_double</td>
+      <td>2</td>
+      <td>1</td>
+      <td>22.12</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>015c3d28c67e46aa95e9ec97c27220e8</td>
+      <td>bogo_10_10_7</td>
+      <td>Bogo_1</td>
+      <td>576.0</td>
+      <td>582.0</td>
+      <td>618.0</td>
+      <td>22.12</td>
+      <td>normal_double</td>
+      <td>2</td>
+      <td>1</td>
+      <td>22.12</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>01633b71b3a2457aa7d35d8bcc3afb5a</td>
+      <td>discount_20_5_10</td>
+      <td>Discount_1</td>
+      <td>504.0</td>
+      <td>552.0</td>
+      <td>600.0</td>
+      <td>24.76</td>
+      <td>normal_double</td>
+      <td>2</td>
+      <td>1</td>
+      <td>24.76</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>01633b71b3a2457aa7d35d8bcc3afb5a</td>
+      <td>discount_10_2_10</td>
+      <td>Discount_1</td>
+      <td>576.0</td>
+      <td>594.0</td>
+      <td>600.0</td>
+      <td>24.76</td>
+      <td>normal_double</td>
+      <td>2</td>
+      <td>1</td>
+      <td>24.76</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>01784d3e205548a594ba3fcdbdaaf17d</td>
+      <td>bogo_10_10_5</td>
+      <td>Bogo_1</td>
+      <td>408.0</td>
+      <td>444.0</td>
+      <td>516.0</td>
+      <td>24.67</td>
+      <td>normal_double</td>
+      <td>2</td>
+      <td>1</td>
+      <td>24.67</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>01784d3e205548a594ba3fcdbdaaf17d</td>
+      <td>bogo_10_10_7</td>
+      <td>Bogo_1</td>
+      <td>504.0</td>
+      <td>516.0</td>
+      <td>516.0</td>
+      <td>24.67</td>
+      <td>normal_double</td>
+      <td>2</td>
+      <td>1</td>
+      <td>24.67</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>01887dcd32b64feb807e2436548b6c87</td>
+      <td>discount_7_3_7</td>
+      <td>Discount_1</td>
+      <td>408.0</td>
+      <td>408.0</td>
+      <td>570.0</td>
+      <td>25.04</td>
+      <td>normal_double</td>
+      <td>2</td>
+      <td>1</td>
+      <td>25.04</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>01887dcd32b64feb807e2436548b6c87</td>
+      <td>bogo_5_5_7</td>
+      <td>Bogo_1</td>
+      <td>504.0</td>
+      <td>522.0</td>
+      <td>570.0</td>
+      <td>25.04</td>
+      <td>normal_double</td>
+      <td>2</td>
+      <td>1</td>
+      <td>25.04</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>01b6d7e8f0884deb936a8a7f15dba895</td>
+      <td>discount_10_2_7</td>
+      <td>Discount_1</td>
+      <td>408.0</td>
+      <td>420.0</td>
+      <td>558.0</td>
+      <td>12.78</td>
+      <td>normal_double</td>
+      <td>2</td>
+      <td>1</td>
+      <td>12.78</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>01b6d7e8f0884deb936a8a7f15dba895</td>
+      <td>discount_10_2_10</td>
+      <td>Discount_1</td>
+      <td>504.0</td>
+      <td>510.0</td>
+      <td>558.0</td>
+      <td>12.78</td>
+      <td>normal_double</td>
+      <td>2</td>
+      <td>1</td>
+      <td>12.78</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>0215efe5136d4a038cb81eae92d59368</td>
+      <td>discount_20_5_10</td>
+      <td>Discount_1</td>
+      <td>336.0</td>
+      <td>342.0</td>
+      <td>534.0</td>
+      <td>11.96</td>
+      <td>normal_double</td>
+      <td>2</td>
+      <td>1</td>
+      <td>11.96</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>0215efe5136d4a038cb81eae92d59368</td>
+      <td>bogo_5_5_5</td>
+      <td>Bogo_1</td>
+      <td>504.0</td>
+      <td>528.0</td>
+      <td>534.0</td>
+      <td>11.96</td>
+      <td>normal_double</td>
+      <td>2</td>
+      <td>1</td>
+      <td>11.96</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>021adce38ab34ede96422ae107643fd5</td>
+      <td>discount_10_2_7</td>
+      <td>Discount_3</td>
+      <td>504.0</td>
+      <td>516.0</td>
+      <td>576.0</td>
+      <td>15.64</td>
+      <td>mixed_instant_normal</td>
+      <td>2</td>
+      <td>1</td>
+      <td>15.64</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>021adce38ab34ede96422ae107643fd5</td>
+      <td>discount_7_3_7</td>
+      <td>Discount_1</td>
+      <td>576.0</td>
+      <td>576.0</td>
+      <td>576.0</td>
+      <td>15.64</td>
+      <td>mixed_instant_normal</td>
+      <td>2</td>
+      <td>1</td>
+      <td>15.64</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>021c1940868647efbcb40ccdb942813b</td>
+      <td>discount_10_2_10</td>
+      <td>Discount_1</td>
+      <td>168.0</td>
+      <td>192.0</td>
+      <td>366.0</td>
+      <td>15.49</td>
+      <td>normal_double</td>
+      <td>2</td>
+      <td>1</td>
+      <td>15.49</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>021c1940868647efbcb40ccdb942813b</td>
+      <td>bogo_5_5_5</td>
+      <td>Bogo_1</td>
+      <td>336.0</td>
+      <td>348.0</td>
+      <td>366.0</td>
+      <td>15.49</td>
+      <td>normal_double</td>
+      <td>2</td>
+      <td>1</td>
+      <td>15.49</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>021c1940868647efbcb40ccdb942813b</td>
+      <td>bogo_5_5_5</td>
+      <td>Bogo_2</td>
+      <td>504.0</td>
+      <td>528.0</td>
+      <td>624.0</td>
+      <td>19.03</td>
+      <td>normal_double</td>
+      <td>2</td>
+      <td>1</td>
+      <td>19.03</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>021c1940868647efbcb40ccdb942813b</td>
+      <td>bogo_10_10_7</td>
+      <td>Bogo_1</td>
+      <td>576.0</td>
+      <td>594.0</td>
+      <td>624.0</td>
+      <td>19.03</td>
+      <td>normal_double</td>
+      <td>2</td>
+      <td>1</td>
+      <td>19.03</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>02a458e1233342b79caff81edbcc30a9</td>
+      <td>discount_7_3_7</td>
+      <td>Discount_1</td>
+      <td>504.0</td>
+      <td>522.0</td>
+      <td>618.0</td>
+      <td>21.51</td>
+      <td>normal_double</td>
+      <td>2</td>
+      <td>1</td>
+      <td>21.51</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>02a458e1233342b79caff81edbcc30a9</td>
+      <td>bogo_5_5_5</td>
+      <td>Bogo_1</td>
+      <td>576.0</td>
+      <td>588.0</td>
+      <td>618.0</td>
+      <td>21.51</td>
+      <td>normal_double</td>
+      <td>2</td>
+      <td>1</td>
+      <td>21.51</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>02abd909ebc94aca8766f3f0ee39db80</td>
+      <td>bogo_5_5_7</td>
+      <td>Bogo_1</td>
+      <td>336.0</td>
+      <td>396.0</td>
+      <td>408.0</td>
+      <td>14.80</td>
+      <td>mixed_instant_normal</td>
+      <td>2</td>
+      <td>1</td>
+      <td>14.80</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>02abd909ebc94aca8766f3f0ee39db80</td>
+      <td>discount_10_2_10</td>
+      <td>Discount_1</td>
+      <td>408.0</td>
+      <td>414.0</td>
+      <td>408.0</td>
+      <td>14.80</td>
+      <td>mixed_instant_normal</td>
+      <td>2</td>
+      <td>1</td>
+      <td>14.80</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 
 
 # 위의 경우를 더블 카운팅으로 봐야할까..?
@@ -3727,3 +4817,12 @@ display(info_performance)
 - 2. 코드에서의 부등호 (<= / <)
 - 3. informational의 효과에 대한 정의
 - 4. informational에서 더블카운팅 해결 방식(First Touch / Last Touch / Multi-Touch)
+
+
+```python
+!jupyter nbconvert --to markdown "03_eda_v2.ipynb"
+```
+
+    [NbConvertApp] Converting notebook 03_eda_v2.ipynb to markdown
+    [NbConvertApp] Writing 82709 bytes to 03_eda_v2.md
+    
