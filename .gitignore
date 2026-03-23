@@ -20,6 +20,7 @@ Thumbs.db
 
 # Data (don’t upload large/private data)
 data/
+1data/
 *.csv
 
 # Logs / outputs

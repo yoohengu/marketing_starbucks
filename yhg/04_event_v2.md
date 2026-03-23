@@ -1295,5 +1295,6 @@ plt.show()
 
     [NbConvertApp] Converting notebook 04_event_v2.ipynb to markdown
     [NbConvertApp] Support files will be in 04_event_v2_files\
-    [NbConvertApp] Writing 27889 bytes to 04_event_v2.md
+    [NbConvertApp] Making directory 04_event_v2_files
+    [NbConvertApp] Writing 27977 bytes to 04_event_v2.md
     
