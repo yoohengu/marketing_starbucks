@@ -1340,5 +1340,5 @@ print(f'{df_tran['time'].value_counts(dropna=False)}\n')
 ```
 
     [NbConvertApp] Converting notebook 01_datacheck.ipynb to markdown
-    [NbConvertApp] Writing 20707 bytes to 01_datacheck.md
+    [NbConvertApp] Writing 26061 bytes to 01_datacheck.md
     
